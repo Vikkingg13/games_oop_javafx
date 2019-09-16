@@ -22,13 +22,20 @@ public class Logic {
     }
 
     public boolean move(Cell source, Cell dest) {
-        boolean rst = false;
+        boolean rst = true;
         int index = this.findBy(source);
         if (index != -1) {
             Cell[] steps = this.figures[index].way(source, dest);
             if (steps.length > 0 && steps[steps.length - 1].equals(dest)) {
-                rst = true;
-                this.figures[index] = this.figures[index].copy(dest);
+                for (Cell step : steps) {
+                    if (this.findBy(step) != -1) {
+                        rst = false;
+                        break;
+                    }
+                }
+                if (rst) {
+                    this.figures[index] = this.figures[index].copy(dest);
+                }
             }
         }
         return rst;
